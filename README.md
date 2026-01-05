@@ -1,2 +1,2 @@
-# octree-visualiser
-Octree visualiser for dynamic objects.
+# quadtree-visualiser
+Quadtree visualiser for dynamic objects.

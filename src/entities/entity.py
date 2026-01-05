@@ -45,7 +45,7 @@ class Entity:
 
         distance = self.get_magnitude(dx, dy)
 
-        return distance <= self.SIZE
+        return distance <= self.SIZE + other.SIZE
 
     def get_magnitude(self, x, y):
         return math.sqrt(x * x + y * y)
