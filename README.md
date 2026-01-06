@@ -32,3 +32,5 @@ python main.py
 ```
 
 ## Showcase
+
+https://github.com/user-attachments/assets/5899a9d2-54c4-49ea-b93d-9f314b342424
