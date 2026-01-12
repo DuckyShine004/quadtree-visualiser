@@ -29,6 +29,7 @@ def main():
         for entity in entities:
             entity.update()
         quadtree.construct(entities)
+        quadtree.construct_grid()
         for entity in entities:
             if entity.colliding:
                 continue

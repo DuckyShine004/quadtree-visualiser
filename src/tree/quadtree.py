@@ -1,5 +1,7 @@
 import pygame
 
+from collections import deque
+
 from src.tree.node import Node
 
 from src.constants import WINDOW, COLOUR
@@ -16,11 +18,9 @@ class Quadtree:
     def __init__(self):
         self.root: Optional[Node] = None
 
-        self.grids = set()
+        self.grids = []
 
     def construct(self, entities):
-        self.grids = set()
-
         def _construct(x, y, size, depth) -> Optional[Node]:
             if depth > self.MAX_DEPTH:
                 return None
@@ -46,20 +46,9 @@ class Quadtree:
             next_depth = depth + 1
 
             node.top_left = _construct(left, top, next_size, next_depth)
-            if node.top_left is not None:
-                self.grids.add((left, top, next_size))
-
             node.top_right = _construct(left + next_size, top, next_size, next_depth)
-            if node.top_right is not None:
-                self.grids.add((left + next_size, top, next_size))
-
             node.bottom_left = _construct(left, top + next_size, next_size, next_depth)
-            if node.bottom_left is not None:
-                self.grids.add((left, top + next_size, next_size))
-
             node.bottom_right = _construct(left + next_size, top + next_size, next_size, next_depth)
-            if node.bottom_right is not None:
-                self.grids.add((left + next_size, top + next_size, next_size))
 
             return node
 
@@ -89,6 +78,24 @@ class Quadtree:
             node = next
 
         return node
+
+    def construct_grid(self):
+        self.grids.clear()
+
+        queue = deque([self.root])
+
+        while queue:
+            node = queue.popleft()
+
+            if node is None:
+                continue
+
+            self.grids.append((node.x, node.y, node.size))
+
+            queue.append(node.top_left)
+            queue.append(node.top_right)
+            queue.append(node.bottom_left)
+            queue.append(node.bottom_right)
 
     def render(self, screen):
         for x, y, size in self.grids:
